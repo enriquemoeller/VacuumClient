@@ -1,0 +1,10 @@
+/Users/roylove/Projects/OnshoreKnights/IntelligentVacuum/bin/Debug/netcoreapp2.0/IntelligentVacuum.deps.json
+/Users/roylove/Projects/OnshoreKnights/IntelligentVacuum/bin/Debug/netcoreapp2.0/IntelligentVacuum.runtimeconfig.json
+/Users/roylove/Projects/OnshoreKnights/IntelligentVacuum/bin/Debug/netcoreapp2.0/IntelligentVacuum.runtimeconfig.dev.json
+/Users/roylove/Projects/OnshoreKnights/IntelligentVacuum/bin/Debug/netcoreapp2.0/IntelligentVacuum.dll
+/Users/roylove/Projects/OnshoreKnights/IntelligentVacuum/bin/Debug/netcoreapp2.0/IntelligentVacuum.pdb
+/Users/roylove/Projects/OnshoreKnights/IntelligentVacuum/obj/Debug/netcoreapp2.0/IntelligentVacuum.csproj.CoreCompileInputs.cache
+/Users/roylove/Projects/OnshoreKnights/IntelligentVacuum/obj/Debug/netcoreapp2.0/IntelligentVacuum.AssemblyInfoInputs.cache
+/Users/roylove/Projects/OnshoreKnights/IntelligentVacuum/obj/Debug/netcoreapp2.0/IntelligentVacuum.AssemblyInfo.cs
+/Users/roylove/Projects/OnshoreKnights/IntelligentVacuum/obj/Debug/netcoreapp2.0/IntelligentVacuum.dll
+/Users/roylove/Projects/OnshoreKnights/IntelligentVacuum/obj/Debug/netcoreapp2.0/IntelligentVacuum.pdb
