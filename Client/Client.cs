@@ -11,7 +11,7 @@ namespace IntelligentVacuum.Client
         {
             var map = new Environments.AreaMap(xAxisLenght, yAxisLenght);
             var actionResult = new ActionResult();
-            var agent = new Agent(map);
+            var agent = new Agent();
             var game = new Gamification();
             var Actions = new Actions(map);
             Room agentCurrentRoom = new Room();
