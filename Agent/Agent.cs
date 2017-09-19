@@ -6,31 +6,54 @@ namespace IntelligentVacuum.Agent
 
     public class Agent
     {
-        ActionResult actionResult = new ActionResult();
-        public Agent(AreaMap map)
+        public Agent()
         {
-            _map = map;
+            lastDirection = directions.down;
+            IShouldBeMovingRight = true;
         }
-        private AreaMap _map { get; set; }
         public Room CurrentRoom { get; set; }
+        public bool ActionSuccess { get; set; }
+        private Actions.actions lastAction { get; set; }
+        private enum directions { up, down, left, right }
+        private directions lastDirection { get; set; }
+        private bool IShouldBeMovingRight { get; set; }
 
-        public Actions.actions DoAction(ActionResult result)
+        public Actions.actions DecideAction(ActionResult result)
         {
             Actions.actions action;
             CurrentRoom = result.ActionRoom;
-            //should send an action and receive the result
-            Actions availibleActions = new Actions(_map);
-            if(CurrentRoom.IsDirty)
+            ActionSuccess = result.ActionSuccess;
+            action = Actions.actions.none;
+
+            if (CurrentRoom.IsDirty)
             {
                 action = Actions.actions.clean;
                 Console.WriteLine("cleaning");
             }
             else
             {
-                action = Actions.actions.moveright;
-                Console.WriteLine("Moving Right");
+                if (result.ActionSuccess && IShouldBeMovingRight)
+                {
+                    action = Actions.actions.moveright;
+                    lastDirection = directions.right;
+                    Console.WriteLine("Moving Right");
+                }
+                else if (result.ActionSuccess && !IShouldBeMovingRight)
+                {
+                    action = Actions.actions.moveleft;
+                    lastAction = Actions.actions.moveleft;
+                    lastDirection = directions.left;
+                    Console.WriteLine("Moving Left");
+                }
+                else if (!result.ActionSuccess && lastAction != Actions.actions.moveup)
+                {
+                    action = Actions.actions.moveup;
+                    lastAction = Actions.actions.moveup;
+                    IShouldBeMovingRight = !IShouldBeMovingRight;
+                    Console.WriteLine("Moving up");
+                }
             }
-
+            lastAction = action;
             return action;
 
         }

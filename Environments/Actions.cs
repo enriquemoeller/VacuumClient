@@ -11,14 +11,15 @@ namespace IntelligentVacuum.Environments
         {
             _map = map;
         }
-        public enum actions  { moveup, movedown, moveleft, moveright, clean, lookup, none};
-        public Dictionary<bool, Room> ActionResult{ get; set; }
+        public Actions(){}
+        public enum actions { moveup, movedown, moveleft, moveright, clean, lookup, lookdown, lookright, lookleft, none };
 
         public ActionResult AvailableActions(actions action, Room currentRoom)
         {
             actionResult.ActionSuccess = false;
             actionResult.ActionRoom = currentRoom;
-            switch(action)
+            actionResult.CurrentRoom = currentRoom;
+            switch (action)
             {
                 case actions.moveup:
                     MoveUp(currentRoom);
@@ -38,6 +39,19 @@ namespace IntelligentVacuum.Environments
                 case actions.lookup:
                     LookUp(currentRoom);
                     break;
+                case actions.lookdown:
+                    LookDown(currentRoom);
+                    break;
+                case actions.lookright:
+                    LookRight(currentRoom);
+                    break;
+                case actions.lookleft:
+                    LookLeft(currentRoom);
+                    break;
+                case actions.none:
+                    actionResult.ActionRoom = currentRoom;
+                    actionResult.ActionSuccess = true;
+                    break;
                 default:
                     actionResult.ActionRoom = currentRoom;
                     actionResult.ActionSuccess = false;
@@ -48,131 +62,143 @@ namespace IntelligentVacuum.Environments
         private void MoveUp(Room room)
         {
             int y = room.YAxis + 1;
-            foreach( var rooms in _map.rooms)
+            foreach (var rooms in _map.rooms)
             {
-                if(rooms.XAxis == room.XAxis && rooms.YAxis == y && actionResult.ActionSuccess == false)
+                if (rooms.XAxis == room.XAxis && rooms.YAxis == y && actionResult.ActionSuccess == false)
                 {
+                    Console.WriteLine("You move into the room.");
                     actionResult.ActionRoom = rooms;
                     actionResult.ActionSuccess = true;
+                    actionResult.CurrentRoom = rooms;
                 }
             }
-            if(!actionResult.ActionSuccess)
+            if (!actionResult.ActionSuccess)
             {
-                actionResult.ActionRoom = room;
-                Console.WriteLine("Can't move that direction");
+                actionResult.CurrentRoom = room;
+                Console.WriteLine("Can't move that direction.");
             }
         }
         private void Movedown(Room room)
         {
             int y = room.YAxis - 1;
-            foreach( var rooms in _map.rooms)
+            foreach (var rooms in _map.rooms)
             {
-                if(rooms.XAxis == room.XAxis && rooms.YAxis == y && actionResult.ActionSuccess == false)
+                if (rooms.XAxis == room.XAxis && rooms.YAxis == y && actionResult.ActionSuccess == false)
                 {
+                    Console.WriteLine("You move into the room.");
                     actionResult.ActionRoom = rooms;
                     actionResult.ActionSuccess = true;
+                    actionResult.CurrentRoom = rooms;
                 }
             }
-            if(!actionResult.ActionSuccess)
+            if (!actionResult.ActionSuccess)
             {
-                actionResult.ActionRoom = room;
-                Console.WriteLine("Can't move that direction");
+                actionResult.CurrentRoom = room;
+                Console.WriteLine("Can't move that direction.");
             }
         }
         private void MoveLeft(Room room)
         {
             int x = room.XAxis - 1;
-            foreach( var rooms in _map.rooms)
+            foreach (var rooms in _map.rooms)
             {
-                if(rooms.YAxis == room.YAxis && rooms.XAxis == x && actionResult.ActionSuccess == false) 
+                if (rooms.YAxis == room.YAxis && rooms.XAxis == x && actionResult.ActionSuccess == false)
                 {
+                    Console.WriteLine("You move into the room.");
                     actionResult.ActionRoom = rooms;
                     actionResult.ActionSuccess = true;
+                    actionResult.CurrentRoom = rooms;
                 }
             }
-            if(!actionResult.ActionSuccess)
+            if (!actionResult.ActionSuccess)
             {
-                actionResult.ActionRoom = room;
-                Console.WriteLine("Can't move that direction");
+                actionResult.CurrentRoom = room;
+                Console.WriteLine("Can't move that direction.");
             }
         }
         private void MoveRight(Room room)
         {
             int x = room.XAxis + 1;
-            foreach( var rooms in _map.rooms)
+            foreach (var rooms in _map.rooms)
             {
-                if(rooms.YAxis == room.YAxis && rooms.XAxis == x && actionResult.ActionSuccess == false)
+                if (rooms.YAxis == room.YAxis && rooms.XAxis == x && actionResult.ActionSuccess == false)
                 {
+                    Console.WriteLine("You move into the room.");
                     actionResult.ActionRoom = rooms;
                     actionResult.ActionSuccess = true;
+                    actionResult.CurrentRoom = rooms;
                 }
             }
-            if(!actionResult.ActionSuccess)
+            if (!actionResult.ActionSuccess)
             {
-                actionResult.ActionRoom = room;
-                Console.WriteLine("Can't move that direction");
+                actionResult.CurrentRoom = room;
+                Console.WriteLine("Can't move that direction.");
             }
         }
         private void Clean(Room room)
         {
-            actionResult.ActionRoom.IsDirty = false;
-            actionResult.ActionSuccess = true;
+            if (room.IsDirty)
+            {
+                Console.WriteLine("You clean the room");
+                actionResult.ActionRoom.IsDirty = false;
+                actionResult.ActionSuccess = true;
+            }
         }
-        private List<Room> LookUp(Room room)
+        private void LookUp(Room room)
         {
             int y = room.YAxis + 1;
-            if(_map.rooms.Find(x => x.XAxis == x.XAxis && x.YAxis == y) != null)
+            if (_map.rooms.Find(x => x.XAxis == x.XAxis && x.YAxis == y) != null)
             {
                 actionResult.ActionRoom = _map.rooms.Find(x => x.XAxis == x.XAxis && x.YAxis == y);
                 actionResult.ActionSuccess = true;
-                Console.WriteLine("yay");
+                Console.WriteLine("You look at the room");
             }
-            else{
-                Console.WriteLine("boo");
+            else
+            {
+                Console.WriteLine("There is no room there");
             }
-            return null;
         }
-        private List<Room> LookDown(Room room)
+        private void LookDown(Room room)
         {
             int y = room.YAxis - 1;
-            if(_map.rooms.Find(x => x.XAxis == x.XAxis && x.YAxis == y) != null)
+            if (_map.rooms.Find(x => x.XAxis == x.XAxis && x.YAxis == y) != null)
             {
                 actionResult.ActionRoom = _map.rooms.Find(x => x.XAxis == x.XAxis && x.YAxis == y);
                 actionResult.ActionSuccess = true;
-                Console.WriteLine("yay");
+                Console.WriteLine("You look at the room");
             }
-            else{
-                Console.WriteLine("boo");
+            else
+            {
+                Console.WriteLine("There is no room there");
             }
-            return null;
         }
-        private List<Room> LookRight(Room room)
+        private void LookRight(Room room)
         {
             int y = room.XAxis + 1;
-            if(_map.rooms.Find(x => x.XAxis == x.XAxis && x.YAxis == y) != null)
+            if (_map.rooms.Find(x => x.XAxis == x.XAxis && x.YAxis == y) != null)
             {
                 actionResult.ActionRoom = _map.rooms.Find(x => x.XAxis == x.XAxis && x.YAxis == y);
                 actionResult.ActionSuccess = true;
-                Console.WriteLine("yay");
+                Console.WriteLine("You look at the room");
             }
-            else{
-                Console.WriteLine("boo");
+            else
+            {
+                Console.WriteLine("There is no room there");
             }
-            return null;
         }
-        private List<Room> LookLeft(Room room)
+        private void LookLeft(Room room)
         {
             int y = room.XAxis - 1;
-            if(_map.rooms.Find(x => x.XAxis == x.XAxis && x.YAxis == y) != null)
+            if (_map.rooms.Find(x => x.XAxis == x.XAxis && x.YAxis == y) != null)
             {
                 actionResult.ActionRoom = _map.rooms.Find(x => x.XAxis == x.XAxis && x.YAxis == y);
                 actionResult.ActionSuccess = true;
-                Console.WriteLine("yay");
+                Console.WriteLine("You look at the room");
             }
-            else{
-                Console.WriteLine("boo");
+            else
+            {
+                Console.WriteLine("There is no room there");
             }
-            return null;
         }
     }
 }

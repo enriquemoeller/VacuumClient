@@ -7,5 +7,7 @@ namespace IntelligentVacuum.Environments
     {
         public bool ActionSuccess { get; set; }
         public Room ActionRoom { get; set; }
+        public Room CurrentRoom { get; set; }
+        public Actions.actions CurrentAction { get; set; }
     }
 }
