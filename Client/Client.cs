@@ -20,9 +20,7 @@ namespace IntelligentVacuum.Client
             actionResult.ActionSuccess = true;
             for(int i = 1; i<rounds; i++)
             {
-                //add gamifaction 
-                //should return a action the agent wants to take
-                var agentAction = agent.DecideAction(actionResult);
+                var agentAction = agent.DecideAction(agentCurrentRoom);
                 actionResult = Actions.AvailableActions(agentAction, agentCurrentRoom);
                 actionResult.CurrentAction = agentAction;
                 agentCurrentRoom = actionResult.CurrentRoom;
