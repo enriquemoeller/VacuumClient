@@ -5,29 +5,33 @@ namespace IntelligentVacuum.Environments
 
     public class AreaMap
     {
-        public AreaMap(){}
-        public AreaMap(int xSize, int ySize)
+
+        public Room[,] Rooms;
+
+        public Room AgentRoom;
+
+        public AreaMap(int xSize, int ySize, float dirtProbability)
         {
             var rnd = new Random();
-            for (int x = 1; x <= xSize; x++)
+            this.Rooms = new Room[xSize, ySize];
+            for (int x = 0; x < xSize; x++)
             {
-                for (int y = 1; y <= ySize; y++)
+                for (int y = 0; y < ySize; y++)
                 {
-                    Room room = new Room();
-                    room.XAxis = x;
-                    room.YAxis = y;
-                    if(rnd.Next(0,90)> 90)
-                    {
-                        room.IsDirty = false;
-                    }
-                    else
+                    Room room = new Room(x, y);
+                    this.Rooms[x,y] = room;
+
+                    if(rnd.Next(0, 100) < (int)(dirtProbability*100))
                     {
                         room.IsDirty = true;
                     }
-                    rooms.Add(room);
+                    else
+                    {
+                        // IsDirty is false
+                    }
                 }
             }
+            AgentRoom = Rooms[0,0];
         }
-        public List<Room> rooms = new List<Room>();
     }
 }

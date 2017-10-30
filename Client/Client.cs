@@ -7,26 +7,22 @@ namespace IntelligentVacuum.Client
     public class Client
     {
 
-        public void init(int xAxisLenght, int yAxisLenght, int rounds)
+        public void Init(int xSize, int ySize, int rounds)
         {
-            var map = new Environments.AreaMap(xAxisLenght, yAxisLenght);
-            var actionResult = new ActionResult();
+            var map = new Environments.AreaMap(xSize, ySize, .1f);
+            var actionResult = new ActionResult(map.AgentRoom);
             var agent = new Agent();
-            var game = new Gamification();
-            var Actions = new Actions(map);
-            Room agentCurrentRoom = new Room();
-            agentCurrentRoom = map.rooms.Find(x => x.XAxis == 1 && x.YAxis == 1);
-            actionResult.ActionRoom = agentCurrentRoom;
+            var engine = new GameEngine(map);
+            Room agentCurrentRoom = map.Rooms[0,0];
+            actionResult.LookResultRoom = agentCurrentRoom;
             actionResult.ActionSuccess = true;
-            for(int i = 1; i<rounds; i++)
+            for(int i = 0; i < rounds; i++)
             {
                 var agentAction = agent.DecideAction(agentCurrentRoom);
-                actionResult = Actions.AvailableActions(agentAction, agentCurrentRoom);
+                actionResult = engine.DoAction(agentAction, agentCurrentRoom);
                 actionResult.CurrentAction = agentAction;
                 agentCurrentRoom = actionResult.CurrentRoom;
-                game.KeepScore(agentAction, actionResult, map);
             }
-            Console.WriteLine("Your final score was: {0}", game.GetFinalScore(xAxisLenght, yAxisLenght, rounds));
         }
     }
 }

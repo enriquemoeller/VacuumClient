@@ -12,7 +12,7 @@ namespace IntelligentVacuum.Client
         public int TotalScore { get; set; }
         public int NumberOfTurns { get; set; }
 
-        public int KeepScore(Actions.actions action, ActionResult actionResult, AreaMap map)
+        public int KeepScore(GameEngine.AgentActions action, ActionResult actionResult, AreaMap map)
         {
             var CurrentActionCost = GetCurrentActionCost(action);
             if(!actionResult.ActionSuccess)
@@ -20,7 +20,7 @@ namespace IntelligentVacuum.Client
                 CurrentActionCost += 15;
             }
             TotalScore += CurrentActionCost;
-            foreach(Room room in map.rooms)
+            foreach(Room room in map.Rooms)
             {
                 if(room.IsDirty)
                 {
@@ -30,39 +30,39 @@ namespace IntelligentVacuum.Client
             return CurrentActionCost;
         }
 
-        public int GetCurrentActionCost(Actions.actions actions)
+        public int GetCurrentActionCost(GameEngine.AgentActions actions)
         {
             int actionCost = 0;
             switch (actions)
             {
-                case Actions.actions.moveup:
+                case GameEngine.AgentActions.MOVE_UP:
                     actionCost = 5;
                     break;
-                case Actions.actions.movedown:
+                case GameEngine.AgentActions.MOVE_DOWN:
                     actionCost = 5;
                     break;
-                case Actions.actions.moveleft:
+                case GameEngine.AgentActions.MOVE_LEFT:
                     actionCost = 5;
                     break;
-                case Actions.actions.moveright:
+                case GameEngine.AgentActions.MOVE_RIGHT:
                     actionCost = 5;
                     break;
-                case Actions.actions.clean:
+                case GameEngine.AgentActions.CLEAN:
                     actionCost = -10;
                     break;
-                case Actions.actions.lookup:
+                case GameEngine.AgentActions.LOOK_UP:
                     actionCost = 3;
                     break;
-                case Actions.actions.lookdown:
+                case GameEngine.AgentActions.LOOK_DOWN:
                     actionCost = 3;
                     break;
-                case Actions.actions.lookright:
+                case GameEngine.AgentActions.LOOK_RIGHT:
                     actionCost = 3;
                     break;
-                case Actions.actions.lookleft:
+                case GameEngine.AgentActions.LOOK_LEFT:
                     actionCost = 3;
                     break;
-                case Actions.actions.none:
+                case GameEngine.AgentActions.NONE:
                     actionCost = 0;
                     break;
                 default:
