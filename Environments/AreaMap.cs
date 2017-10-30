@@ -33,5 +33,18 @@ namespace IntelligentVacuum.Environments
             }
             AgentRoom = Rooms[0,0];
         }
+
+        public int GetDirtCount()
+        {
+            int dirt = 0;
+            for (int x = 0; x < this.Rooms.GetLength(0); x++)
+            {
+                for (int y = 0; y < this.Rooms.GetLength(1); y++)
+                {
+                    dirt += Convert.ToInt32(this.Rooms[x,y].IsDirty);
+                }
+            }
+            return dirt;
+        }
     }
 }

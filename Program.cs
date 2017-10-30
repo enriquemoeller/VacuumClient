@@ -23,6 +23,13 @@ namespace IntelligentVacuum
             return Console.ReadLine();
         }
 
+        static bool PromptForBool(string message, params object[] values)
+        {
+            bool result;
+            while (!bool.TryParse(Prompt(message, values), out result));
+            return result;
+        }
+
         static int PromptForInt(string message, params object[] values)
         {
             int parsed;

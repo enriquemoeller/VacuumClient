@@ -9,19 +9,21 @@ namespace IntelligentVacuum.Client
 
         public void Run(int xSize, int ySize, int rounds)
         {
-            var map = new Environments.AreaMap(xSize, ySize, .1f);
+            var map = new Environments.AreaMap(xSize, ySize, .5f);
             var actionResult = new ActionResult(map.AgentRoom);
             var agent = new Agent();
             var engine = new GameEngine(map);
             Room agentCurrentRoom = map.Rooms[0,0];
-            actionResult.LookResultRoom = agentCurrentRoom;
-            actionResult.ActionSuccess = true;
+            int startDirt = map.GetDirtCount();
             for(int i = 0; i < rounds; i++)
             {
                 var action = agent.DecideAction(map.AgentRoom);
                 Update(engine, action);
                 Draw(map, i);
             }
+            System.Console.WriteLine("===GAME OVER===");
+            Console.WriteLine("Starting Dirt: {0}", startDirt);
+            Console.WriteLine("Ending Dirt: {0}", map.GetDirtCount());
         }
 
         public ActionResult Update(GameEngine engine, AgentAction action)
