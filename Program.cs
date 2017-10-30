@@ -13,7 +13,7 @@ namespace IntelligentVacuum
             int iYAxis = PromptForInt("Please enter the length of the Y axis:");
             int rounds = PromptForInt("Please enter the number of rounds");
             var client = new Client.Client();
-            client.Init(iXAxis, iYAxis, rounds);
+            client.Run(iXAxis, iYAxis, rounds);
             Pause("Press any key to exit...");
         }
 

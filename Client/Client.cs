@@ -7,7 +7,7 @@ namespace IntelligentVacuum.Client
     public class Client
     {
 
-        public void Init(int xSize, int ySize, int rounds)
+        public void Run(int xSize, int ySize, int rounds)
         {
             var map = new Environments.AreaMap(xSize, ySize, .1f);
             var actionResult = new ActionResult(map.AgentRoom);
@@ -18,10 +18,54 @@ namespace IntelligentVacuum.Client
             actionResult.ActionSuccess = true;
             for(int i = 0; i < rounds; i++)
             {
-                var agentAction = agent.DecideAction(agentCurrentRoom);
-                actionResult = engine.DoAction(agentAction, agentCurrentRoom);
-                actionResult.CurrentAction = agentAction;
-                agentCurrentRoom = actionResult.CurrentRoom;
+                var action = agent.DecideAction(map.AgentRoom);
+                Update(engine, action);
+                Draw(map, i);
+            }
+        }
+
+        public ActionResult Update(GameEngine engine, AgentAction action)
+        {
+            return engine.DoAction(action);
+        }
+
+        public void Draw(AreaMap map, int round)
+        {
+            Console.WriteLine("Round {0}", round);
+            DrawLine(map.Rooms.GetLength(0));
+            for(int y = 0; y < map.Rooms.GetLength(1); y++)
+            {
+                Console.WriteLine();
+                Console.Write('|');
+                for (int x = 0; x < map.Rooms.GetLength(0); x++)
+                {
+                    Room room = map.Rooms[x,y];
+                    // could maybe replace with a reference check...
+                    if (room.XAxis == map.AgentRoom.XAxis && room.YAxis == map.AgentRoom.YAxis)
+                    {
+                        Console.Write('V');
+                    }
+                    else if (room.IsDirty)
+                    {
+                        Console.Write('D');
+                    }
+                    else
+                    {
+                        Console.Write(' ');
+                    }
+                    Console.Write('|');
+                }
+                DrawLine(map.Rooms.GetLength(0));
+            }
+            Console.WriteLine();
+        }
+
+        private void DrawLine(int length)
+        {
+            Console.WriteLine();
+            for (int i = 0; i <= length * 2; i++)
+            {
+                System.Console.Write('-');
             }
         }
     }

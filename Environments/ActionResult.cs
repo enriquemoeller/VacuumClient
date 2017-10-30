@@ -8,7 +8,7 @@ namespace IntelligentVacuum.Environments
         public bool ActionSuccess { get; set; }
         public Room LookResultRoom { get; set; }
         public Room CurrentRoom { get; set; }
-        public GameEngine.AgentActions CurrentAction { get; set; }
+        public AgentAction CurrentAction { get; set; }
 
         public ActionResult(Room currentRoom)
         {

@@ -10,19 +10,9 @@ namespace IntelligentVacuum.Agent
         {
         }
 
-        public GameEngine.AgentActions DecideAction(Room room)
+        public AgentAction DecideAction(Room room)
         {
-            GameEngine.AgentActions action;
-            var CurrentRoom = room;
-            action = GameEngine.AgentActions.NONE;
-
-            if (CurrentRoom.IsDirty)
-            {
-                action = GameEngine.AgentActions.CLEAN;
-                Console.WriteLine("cleaning");
-            }
-            return action;
-
+            return AgentAction.NONE;
         }
     }
 }

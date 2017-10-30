@@ -10,31 +10,38 @@ namespace IntelligentVacuum.Environments
         {
             _map = map;
         }
-        public enum AgentActions { MOVE_UP, MOVE_DOWN, MOVE_LEFT, MOVE_RIGHT, CLEAN, LOOK_UP, LOOK_DOWN, LOOK_RIGHT, LOOK_LEFT, NONE };
 
-        public ActionResult DoAction(AgentActions action, Room currentRoom)
+        public ActionResult DoAction(AgentAction action)
+        {
+            ActionResult result = GetResult(_map.AgentRoom, action);
+            result.CurrentAction = action;
+            _map.AgentRoom = result.CurrentRoom;
+            return result;
+        }
+
+        private ActionResult GetResult(Room currentRoom, AgentAction action)
         {
             switch (action)
             {
-                case AgentActions.MOVE_UP:
+                case AgentAction.MOVE_UP:
                     return MoveUp(currentRoom);
-                case AgentActions.MOVE_DOWN:
+                case AgentAction.MOVE_DOWN:
                     return MoveDown(currentRoom);
-                case AgentActions.MOVE_LEFT:
+                case AgentAction.MOVE_LEFT:
                     return MoveLeft(currentRoom);
-                case AgentActions.MOVE_RIGHT:
+                case AgentAction.MOVE_RIGHT:
                     return MoveRight(currentRoom);
-                case AgentActions.CLEAN:
+                case AgentAction.CLEAN:
                     return Clean(currentRoom);
-                case AgentActions.LOOK_UP:
+                case AgentAction.LOOK_UP:
                     return LookUp(currentRoom);
-                case AgentActions.LOOK_DOWN:
+                case AgentAction.LOOK_DOWN:
                     return LookDown(currentRoom);
-                case AgentActions.LOOK_RIGHT:
+                case AgentAction.LOOK_RIGHT:
                     return LookRight(currentRoom);
-                case AgentActions.LOOK_LEFT:
+                case AgentAction.LOOK_LEFT:
                     return LookLeft(currentRoom);
-                case AgentActions.NONE:
+                case AgentAction.NONE:
                     return new ActionResult(currentRoom) { ActionSuccess = true };
             }
             return new ActionResult(currentRoom);
