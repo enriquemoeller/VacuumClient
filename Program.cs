@@ -9,12 +9,14 @@ namespace IntelligentVacuum
     {
         static void Main(string[] args)
         {
-            int iXAxis = PromptForInt("Please enter the length of the X axis:");
-            int iYAxis = PromptForInt("Please enter the length of the Y axis:");
-            int rounds = PromptForInt("Please enter the number of rounds");
-            var client = new Client.Client();
-            client.Run(iXAxis, iYAxis, rounds);
-            Pause("Press any key to exit...");
+            do
+            {
+                int iXAxis = PromptForInt("Please enter the length of the X axis:");
+                int iYAxis = PromptForInt("Please enter the length of the Y axis:");
+                int rounds = PromptForInt("Please enter the number of rounds");
+                var client = new Client.Client();
+                client.Run(iXAxis, iYAxis, rounds);
+            } while (PromptForBool("Keep playing? (y/n)"));
         }
 
         static string Prompt(string message, params object[] values)
@@ -25,9 +27,20 @@ namespace IntelligentVacuum
 
         static bool PromptForBool(string message, params object[] values)
         {
-            bool result;
-            while (!bool.TryParse(Prompt(message, values), out result));
-            return result;
+            bool? result = null;
+            while (result == null)
+            {
+                char response = Prompt(message, values).ToLower()[0];
+                if (response == 'y')
+                {
+                    result = true;
+                }
+                else if (response == 'n')
+                {
+                    result = false;
+                }
+            }
+            return result.Value;
         }
 
         static int PromptForInt(string message, params object[] values)
