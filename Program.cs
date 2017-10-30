@@ -9,22 +9,31 @@ namespace IntelligentVacuum
     {
         static void Main(string[] args)
         {
-            int iXAxis;
-            int iYAxis;
-            int rounds;
-            Console.WriteLine("Please enter the lenght of the X axis:");
-            var xAxis = Console.ReadLine();
-            int.TryParse(xAxis, out iXAxis);
-            Console.WriteLine("Please enter the lenght of the Y axis:");
-            var yAxis = Console.ReadLine();
-            int.TryParse(yAxis, out iYAxis);
-            Console.WriteLine("Please enter the number of rounds");
-            var numberOfRounds = Console.ReadLine();
-            int.TryParse(numberOfRounds, out rounds);
+            int iXAxis = PromptForInt("Please enter the length of the X axis:");
+            int iYAxis = PromptForInt("Please enter the length of the Y axis:");
+            int rounds = PromptForInt("Please enter the number of rounds");
             var client = new Client.Client();
             client.init(iXAxis, iYAxis, rounds);
-            Console.WriteLine("done");
-            Console.ReadLine();
+            Pause("Press any key to exit...");
+        }
+
+        static string Prompt(string message, params object[] values)
+        {
+            Console.WriteLine(message, values);
+            return Console.ReadLine();
+        }
+
+        static int PromptForInt(string message, params object[] values)
+        {
+            int parsed;
+            while(!int.TryParse(Prompt(message, values), out parsed));
+            return parsed;
+        }
+
+        static void Pause(string message = "Press any key to continue...")
+        {
+            System.Console.WriteLine(message);
+            Console.ReadKey();
         }
     }
 }
