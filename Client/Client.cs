@@ -7,26 +7,68 @@ namespace IntelligentVacuum.Client
     public class Client
     {
 
-        public void init(int xAxisLenght, int yAxisLenght, int rounds)
+        public void Run(int xSize, int ySize, int rounds)
         {
-            var map = new Environments.AreaMap(xAxisLenght, yAxisLenght);
-            var actionResult = new ActionResult();
+            var map = new Environments.AreaMap(xSize, ySize, .5f);
+            var actionResult = new ActionResult(map.AgentRoom);
             var agent = new Agent();
-            var game = new Gamification();
-            var Actions = new Actions(map);
-            Room agentCurrentRoom = new Room();
-            agentCurrentRoom = map.rooms.Find(x => x.XAxis == 1 && x.YAxis == 1);
-            actionResult.ActionRoom = agentCurrentRoom;
-            actionResult.ActionSuccess = true;
-            for(int i = 1; i<rounds; i++)
+            var engine = new GameEngine(map);
+            Room agentCurrentRoom = map.Rooms[0,0];
+            int startDirt = map.GetDirtCount();
+            for(int i = 0; i < rounds; i++)
             {
-                var agentAction = agent.DecideAction(agentCurrentRoom);
-                actionResult = Actions.AvailableActions(agentAction, agentCurrentRoom);
-                actionResult.CurrentAction = agentAction;
-                agentCurrentRoom = actionResult.CurrentRoom;
-                game.KeepScore(agentAction, actionResult, map);
+                var action = agent.DecideAction(map.AgentRoom);
+                Update(engine, action);
+                Draw(map, i);
             }
-            Console.WriteLine("Your final score was: {0}", game.GetFinalScore(xAxisLenght, yAxisLenght, rounds));
+            System.Console.WriteLine("===GAME OVER===");
+            Console.WriteLine("Starting Dirt: {0}", startDirt);
+            Console.WriteLine("Ending Dirt: {0}", map.GetDirtCount());
+        }
+
+        public ActionResult Update(GameEngine engine, AgentAction action)
+        {
+            return engine.DoAction(action);
+        }
+
+        public void Draw(AreaMap map, int round)
+        {
+            Console.WriteLine("Round {0}", round);
+            DrawLine(map.Rooms.GetLength(0));
+            for(int y = 0; y < map.Rooms.GetLength(1); y++)
+            {
+                Console.WriteLine();
+                Console.Write('|');
+                for (int x = 0; x < map.Rooms.GetLength(0); x++)
+                {
+                    Room room = map.Rooms[x,y];
+                    // could maybe replace with a reference check...
+                    if (room.XAxis == map.AgentRoom.XAxis && room.YAxis == map.AgentRoom.YAxis)
+                    {
+                        Console.Write('V');
+                    }
+                    else if (room.IsDirty)
+                    {
+                        Console.Write('D');
+                    }
+                    else
+                    {
+                        Console.Write(' ');
+                    }
+                    Console.Write('|');
+                }
+                DrawLine(map.Rooms.GetLength(0));
+            }
+            Console.WriteLine();
+        }
+
+        private void DrawLine(int length)
+        {
+            Console.WriteLine();
+            for (int i = 0; i <= length * 2; i++)
+            {
+                System.Console.Write('-');
+            }
         }
     }
 }
