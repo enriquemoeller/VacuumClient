@@ -48,7 +48,7 @@ namespace IntelligentVacuum.Environments
         }
         private ActionResult MoveUp(Room room)
         {
-            int y = room.YAxis + 1;
+            int y = room.YAxis - 1;
             ActionResult result = new ActionResult(room);
             if (y >= 0 && y < _map.Rooms.GetLength(1))
             {
