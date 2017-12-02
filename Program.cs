@@ -14,8 +14,9 @@ namespace IntelligentVacuum
                 int iXAxis = PromptForInt("Please enter the length of the X axis:");
                 int iYAxis = PromptForInt("Please enter the length of the Y axis:");
                 int rounds = PromptForInt("Please enter the number of rounds");
+                bool lockRooms = PromptForBool("Lock some rooms? (y/n)");
                 var client = new Client.Client();
-                client.Run(iXAxis, iYAxis, rounds);
+                client.Run(iXAxis, iYAxis, rounds, lockRooms);
             } while (PromptForBool("Keep playing? (y/n)"));
         }
 
