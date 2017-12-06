@@ -26,13 +26,6 @@ namespace IntelligentVacuum.Agent
                     action = AgentAction.NONE;
                 }
             }
-            // if (_previousAction == action) {
-            //     if (_previousRoom == room) {
-            //         _lockedRooms.Add(room);
-            //     }
-            // }
-
-            // _previousAction = action;
 
             #region First Assignment Homework
             // bool isDirty = room.IsDirty;
@@ -151,6 +144,7 @@ namespace IntelligentVacuum.Agent
             {
                 newNode = new GraphNode(newRoom, node, action);
             }
+            
             return newNode;
         }
     }
